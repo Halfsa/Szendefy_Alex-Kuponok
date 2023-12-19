@@ -10,7 +10,7 @@ const conn = mysql.createPool({
   port: parseInt(process.env.DB_PORT) || 3306,
   user: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_DATABASE || 'szinhazdb',
+  database: process.env.DB_DATABASE || 'szinhaz',
 }).promise();
 
 @Controller()
@@ -20,7 +20,7 @@ export class AppController {
   @Get()
   @Render('index')
   async index() {
-    const [adatok] = await conn.execute('SELECT id, title, percentage, code FROM szinhaz ORDER BY title')
+    const [adatok] = await conn.execute('SELECT id, title, percentage, code FROM coupons ORDER BY title')
     console.log(adatok);
     
     return { coupons:adatok,title: 'Táblázat' };
@@ -48,7 +48,7 @@ export class AppController {
       return {error: "A kedvezmény minimum 1, maximum pedig 100% lehet",title: 'Új kupon felvétele'};
     }
     else{
-      const [ adatok ] = await conn.execute('INSERT INTO szinhaz (title, percentage, code) VALUES (?, ?, ?)', [ 
+      const [ adatok ] = await conn.execute('INSERT INTO coupons (title, percentage, code) VALUES (?, ?, ?)', [ 
         cim,
         kedvezmeny,
         kod,
