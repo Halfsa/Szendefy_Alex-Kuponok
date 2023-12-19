@@ -3,7 +3,6 @@ import * as mysql from 'mysql2';
 import { AppService } from './app.service';
 import { kuponDTO } from './kuponDto';
 import { Response } from 'express';
-import { title } from 'process';
 
 const conn = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
@@ -21,8 +20,6 @@ export class AppController {
   @Render('index')
   async index() {
     const [adatok] = await conn.execute('SELECT id, title, percentage, code FROM coupons ORDER BY title')
-    console.log(adatok);
-    
     return { coupons:adatok,title: 'Táblázat' };
   }
   @Get('/ujKupon')
